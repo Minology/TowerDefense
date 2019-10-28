@@ -1,7 +1,10 @@
 /**
  * Created by Minology on 03:16 CH
- */module TowerDefense {
+ */
+module TowerDefense {
      requires javafx.fxml;
      requires javafx.controls;
+     requires javafx.media;
      opens thegame;
+     exports thegame;
 }
