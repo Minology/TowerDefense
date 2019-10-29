@@ -1,4 +1,4 @@
-package thegame.character;
+package thegame.character.entity;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -14,19 +14,17 @@ import java.nio.file.Paths;
  */
 public abstract class GameEntity {
     protected Point2D coords;
-    private Image image;
     protected ImageView view;
 
-    public GameEntity() {}
-    public GameEntity(int x, int y) {
+    protected GameEntity() {}
+    protected GameEntity(int x, int y) {
         coords = new Point2D(x, y);
     }
 
     public GameEntity(String path) {
         try {
             InputStream is = Files.newInputStream(Paths.get(path));
-            image = new Image(is);
-            view = new ImageView(image);
+            view = new ImageView(new Image(is));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -36,22 +34,25 @@ public abstract class GameEntity {
         return new Point2D(view.getTranslateX(), view.getTranslateY());
     }
 
-    public int getCurrentX() {
+    protected int getCurrentX() {
         return (int) view.getTranslateX();
     }
 
-    public int getCurrentY() {
+    protected int getCurrentY() {
         return (int) view.getTranslateY();
     }
 
-    public Node getView(){
+    public Node getView() {
         return view;
     }
 
     public void setView(int x, int y) {
-        view.setTranslateX(-50);
-        view.setTranslateY(-50);
         view.setX(x);
         view.setY(y);
+    }
+
+    protected void setTranslate(int x, int y) {
+        view.setTranslateX(x);
+        view.setTranslateY(y);
     }
 }

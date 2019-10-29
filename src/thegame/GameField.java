@@ -45,7 +45,7 @@ public class GameField {
         }
     }
 
-    public void addTower(Tower tower){
+    public void addTower(Tower tower) {
         towers.add(tower);
     }
 
@@ -57,8 +57,16 @@ public class GameField {
         return enemies;
     }
 
-    public Enemy getLastEnemy(){
+    public void setEnemyList(ArrayList<Enemy> enemyList) {
+        enemies = enemyList;
+    }
+
+    public Enemy getLastEnemy() {
         return enemies.get(enemies.size() - 1);
+    }
+
+    public boolean hasEnemy() {
+        return !enemies.isEmpty();
     }
 
     public void removeEnemy(Enemy enemy) {

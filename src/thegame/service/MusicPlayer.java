@@ -1,4 +1,4 @@
-package thegame;
+package thegame.service;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -10,7 +10,6 @@ import java.net.URL;
  * Created by Minology on 10:34 CH
  */
 public class MusicPlayer {
-    private boolean infiniteLoop;
     private MediaPlayer player;
 
     public MusicPlayer(String path, boolean infiniteLoop) {

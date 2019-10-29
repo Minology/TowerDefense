@@ -6,7 +6,6 @@ import javafx.stage.Stage;
 import thegame.menu.Menu;
 
 public class Main extends Application {
-
     @Override
     public void start(Stage primaryStage) {
         Scene scene = new Scene(Menu.createContent());

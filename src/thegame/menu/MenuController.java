@@ -8,7 +8,7 @@ import thegame.GameStage;
 
 public class MenuController {
     static void startNewGame() {
-        try{
+        try {
             GameStage gameStage = new GameStage();
             gameStage.initialize();
         } catch (Exception ex) {

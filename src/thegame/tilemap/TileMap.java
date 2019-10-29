@@ -1,10 +1,11 @@
-package thegame;
+package thegame.tilemap;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import thegame.Config;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class TileMap extends ImageView {
     private Path enemyPath;
     private Path healthPath;
 
-    public TileMap(int width, int height){
+    public TileMap(int width, int height) {
         this.WIDTH = width;
         this.HEIGHT = height;
         this.TILE_WIDTH = width / Config.TILE_SIZE + 1;
@@ -39,8 +40,8 @@ public class TileMap extends ImageView {
         findPath();
     }
 
-    private void loadMapArray()  {
-        try{
+    private void loadMapArray() {
+        try {
             File src = new File("src/thegame/res/map/map1.txt");
             Scanner in = new Scanner(src);
             for (int i = 0; i < TILE_HEIGHT; ++i) {
@@ -48,13 +49,13 @@ public class TileMap extends ImageView {
                     map[i][j] = in.nextInt();
                 }
             }
-        } catch (IOException ex){
+        } catch (IOException ex) {
             System.out.println("Where in the world is the file map1.txt?");
         }
     }
 
     private void loadMapImage(){
-        try{
+        try {
             InputStream is = Files.newInputStream(Paths.get("src/thegame/res/map/tilemap.png"));
             Image image = new Image(is);
             this.setFitWidth(Config.SCREEN_WIDTH);
@@ -63,15 +64,6 @@ public class TileMap extends ImageView {
         }
         catch (IOException e) {
             System.out.println("Where in the world is tilemap.png?");
-        }
-    }
-
-    private class Coordinate {
-        private int x;
-        private int y;
-        public Coordinate(int x, int y) {
-            this.x = x;
-            this.y = y;
         }
     }
 

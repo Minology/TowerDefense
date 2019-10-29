@@ -1,23 +1,21 @@
 package thegame;
 
 import javafx.animation.AnimationTimer;
-import javafx.animation.Interpolator;
-import javafx.animation.PathTransition;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Path;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import thegame.character.Projectile;
+import thegame.character.projectile.Projectile;
 import thegame.character.enemy.Enemy;
 import thegame.character.enemy.EnemyWaves;
 import thegame.character.tower.MachineGunTower;
 import thegame.character.tower.NormalTower;
 import thegame.character.tower.SniperTower;
 import thegame.character.tower.Tower;
+import thegame.service.MusicPlayer;
+import thegame.tilemap.TileMap;
+
 import java.util.ArrayList;
 
 /**
@@ -30,7 +28,6 @@ public class GameStage {
     private Pane projectileLayer;
     private GameField gameField;
     private Scene gameScene;
-    private AnimationTimer gameLoop;
     private EnemyWaves enemyWaves;
     private MusicPlayer background;
     private static Stage stage;
@@ -54,11 +51,11 @@ public class GameStage {
         background = new MusicPlayer("res/sound/theme.mp3", true);
     }
 
-    public static void setGameStage(Stage stage1){
+    public static void setGameStage(Stage stage1) {
         stage = stage1;
     }
 
-    private void createTower(){
+    private void createTower() {
         NormalTower normalTower1 = new NormalTower(Config.SCREEN_WIDTH - 64*2, 64*5);
         MachineGunTower machineGunTower1 = new MachineGunTower(Config.SCREEN_WIDTH - 64*7, 64*7);
         SniperTower sniperTower1 = new SniperTower(64*10, 64*5);
@@ -68,25 +65,10 @@ public class GameStage {
         towerLayer.getChildren().addAll(normalTower1.getView(), machineGunTower1.getView(), sniperTower1.getView());
     }
 
-    private void spawnEnemies(Enemy.type enemyType){
+    private void spawnEnemies(Enemy.type enemyType) {
         gameField.addEnemy(enemyType);
         Enemy enemy = gameField.getLastEnemy();
-        createPathTransition(enemy.getView(), tileMap.getEnemyPath(), true, enemy.getTravelTime());
-        createPathTransition(enemy.getHealthBar(), tileMap.getHealthPath(), false, enemy.getTravelTime());
-    }
-
-    private void createPathTransition(Node node, Path path, boolean orientation, double travelTime){
-        enemyLayer.getChildren().add(node);
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setPath(path);
-        pathTransition.setDuration(Duration.millis(travelTime));
-        pathTransition.setNode(node);
-        pathTransition.setInterpolator(Interpolator.LINEAR);
-        if (orientation) {
-            pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        }
-        pathTransition.setOnFinished(e -> enemyLayer.getChildren().removeAll(node));
-        pathTransition.play();
+        enemy.move(enemyLayer, tileMap.getEnemyPath());
     }
 
     private void createProjectiles(long currentNanoTime) {
@@ -119,52 +101,46 @@ public class GameStage {
 
     private void removeEnemies() {
         if (gameField.getEnemyList().isEmpty()) return;
-        ArrayList<Enemy> enemyArrayList = new ArrayList<>();
+        ArrayList<Enemy> enemyList = new ArrayList<>();
         for (Enemy enemy : gameField.getEnemyList()) {
-            if (!enemy.isAlive()) {
+            if (!enemy.isAlive() || enemy.isFinished()) {
                 enemyLayer.getChildren().remove(enemy.getView());
-                enemyLayer.getChildren().remove(enemy.getHealthBar());
+                enemyLayer.getChildren().remove(enemy.getHealthBarPane());
             } else {
-                enemyArrayList.add(enemy);
+                enemyList.add(enemy);
             }
         }
         gameField.getEnemyList().clear();
-        gameField.getEnemyList().addAll(enemyArrayList);
+        gameField.setEnemyList(enemyList);
     }
 
-    private void startGame(){
+    private void startGame() {
         final AnimationTimer timer = new AnimationTimer() {
-            long lastWaveNanoTime = System.nanoTime();
             long lastEnemySpawnNanoTime = System.nanoTime();
-            long lastEnemyDeadNanoTime = System.nanoTime();
-            boolean flag = false;
+            long lastWaveFinishedTime = System.nanoTime();
+            boolean finishedFlag = false;
             @Override
             public void handle(long currentNanoTime) {
-                double elapsedWaveTime = (currentNanoTime - lastWaveNanoTime) / 1000000000.0;
-                if (elapsedWaveTime > enemyWaves.currentWaveTime() ||
-                        (flag && currentNanoTime > lastEnemyDeadNanoTime + EnemyWaves.WAVE_DELAY_IN_SECOND * 1000000000.0)) {
-                    lastWaveNanoTime = currentNanoTime;
-                    if (enemyWaves.hasNextWave()) {
-                        enemyWaves.toNextWave();
-                    }
-                    flag = false;
+                if ((currentNanoTime - lastWaveFinishedTime) >= EnemyWaves.WAVE_DELAY_IN_SECOND * 1e9 && finishedFlag) {
+                    enemyWaves.toNextWave();
+                    finishedFlag = false;
                 }
-
-                double elapsedEnemyTime = (currentNanoTime - lastEnemySpawnNanoTime) / 1000000000.0;
-                if (elapsedEnemyTime > 1 && enemyWaves.hasNextEnemyInCurrentWave()) {
+                if (!enemyWaves.hasNextEnemyInCurrentWave() && !gameField.hasEnemy()) {
+                    if (enemyWaves.hasNextWave() && !finishedFlag) {
+                        lastWaveFinishedTime = currentNanoTime;
+                        finishedFlag = true;
+                    } else {}
+                }
+                double elapsedEnemySpawnTime = (currentNanoTime - lastEnemySpawnNanoTime) / 1e9;
+                if (elapsedEnemySpawnTime > EnemyWaves.DELAY_TO_NEXT_ENEMY && enemyWaves.hasNextEnemyInCurrentWave()) {
                     spawnEnemies(enemyWaves.getNextEnemy());
                     lastEnemySpawnNanoTime = currentNanoTime;
                 }
                 createProjectiles(currentNanoTime);
                 chaseEnemy();
                 removeEnemies();
-                if (!flag && !enemyWaves.hasNextEnemyInCurrentWave() && gameField.getEnemyList().isEmpty()) {
-                    lastEnemyDeadNanoTime = currentNanoTime;
-                    flag = true;
-                }
             }
         };
-        gameLoop = timer;
         timer.start();
     }
 }

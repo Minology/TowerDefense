@@ -9,7 +9,8 @@ import java.util.Scanner;
  * Created by Minology on 09:29 CH
  */
 public class EnemyWaves {
-    public static int WAVE_DELAY_IN_SECOND = 15;
+    public static double DELAY_TO_NEXT_ENEMY  = 1;
+    public static double WAVE_DELAY_IN_SECOND = 3;
     private int numOfWaves;
     private int currentWave;
     private int currentEnemy;
@@ -43,16 +44,16 @@ public class EnemyWaves {
                     }
                 }
             }
-        } catch (IOException ex){
+        } catch (IOException ex) {
             System.out.println("You're save. I cannot find any enemy~~~");
         }
     }
 
-    public boolean hasNextWave(){
+    public boolean hasNextWave() {
         return currentWave + 1 < numOfWaves;
     }
 
-    public void toNextWave(){
+    public void toNextWave() {
         ++currentWave;
         currentEnemy = 0;
     }
@@ -63,39 +64,8 @@ public class EnemyWaves {
         return enemyType;
     }
 
-    public double currentWaveTime(){
-        long waveTime = 0;
-        for (int i = 0; i < wave[currentWave].size(); ++i) {
-            Enemy.type e = wave[currentWave].get(i);
-            switch (e) {
-                case NORMAL:
-                    waveTime = Math.max(waveTime, 100 / NormalEnemy.SPEED + i);
-                    break;
-                case SMALLER:
-                    waveTime = Math.max(waveTime, 100 / SmallerEnemy.SPEED + i);
-                    break;
-                case TANKER:
-                    waveTime = Math.max(waveTime, 100 / TankerEnemy.SPEED + i);
-                    break;
-                case BOSS:
-                    waveTime = Math.max(waveTime, 100 / BossEnemy.SPEED + i);
-                    break;
-            }
-        }
-        return waveTime + WAVE_DELAY_IN_SECOND;
-    }
 
     public boolean hasNextEnemyInCurrentWave() {
         return currentEnemy < wave[currentWave].size();
-    }
-
-    public void print() {
-        System.out.println(numOfWaves);
-        for (int i = 0; i < wave.length; ++i){
-            for (Enemy.type j : wave[i]){
-                System.out.print(j + " ");
-            }
-            System.out.println();
-        }
     }
 }

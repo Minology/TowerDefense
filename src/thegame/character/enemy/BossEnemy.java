@@ -3,11 +3,11 @@ package thegame.character.enemy;
 /**
     extreme HP and ARMOR, low SPEED, extreme bounty
 */
-public class BossEnemy extends Enemy{
-    public static final int HP = 300;
-    public static final int ARMOR = 20;
-    public static final int SPEED = 2;
-    public static final int BOUNTY = 1500;
+public class BossEnemy extends Enemy {
+    private static final int HP = 300;
+    private static final int ARMOR = 20;
+    private static final int SPEED = 2;
+    private static final int BOUNTY = 1500;
     public BossEnemy(int x, int y){
         super(x, y);
     }

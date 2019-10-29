@@ -1,17 +1,18 @@
-package thegame.character.enemy;
+package thegame.character.healthbar;
 
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
-import thegame.character.GameEntity;
+import thegame.character.entity.MovableEntity;
 
-class HealthBar extends GameEntity {
-
+public class HealthBar extends MovableEntity {
     private Rectangle outerHealthRect;
     private Rectangle innerHealthRect;
+    private Pane pane;
 
-    HealthBar() {
+    public HealthBar() {
         double height = 10;
         double outerWidth = 60;
         double innerWidth = 60;
@@ -25,16 +26,16 @@ class HealthBar extends GameEntity {
         innerHealthRect = new Rectangle(x, y, innerWidth, height);
         innerHealthRect.setStrokeType(StrokeType.OUTSIDE);
         innerHealthRect.setFill(Color.LIMEGREEN);
+        pane = new Pane();
+        pane.getChildren().addAll(outerHealthRect, innerHealthRect);
+        pane.setLayoutY(-30);
     }
 
-    void setValue(double value) {
+    public void setValue(double value) {
         innerHealthRect.setWidth( outerHealthRect.getWidth() * value);
     }
 
-    Pane getPane() {
-        Pane pane = new Pane();
-        pane.getChildren().addAll(outerHealthRect, innerHealthRect);
-        pane.setTranslateY(-50);
+    public Node getView() {
         return pane;
     }
 }

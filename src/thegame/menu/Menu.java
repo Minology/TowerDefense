@@ -60,7 +60,7 @@ public class Menu {
         return root;
     }
 
-    private static class Title extends StackPane{
+    private static class Title extends StackPane {
         public Title(String name) {
             Text text = new Text(name);
             text.setFill(Color.WHITE);
@@ -71,11 +71,11 @@ public class Menu {
         }
     }
 
-    private static class MenuBox extends VBox{
+    private static class MenuBox extends VBox {
         public MenuBox(MenuItem...items) {
             getChildren().add(createSeperator());
 
-            for(MenuItem item : items) {
+            for (MenuItem item : items) {
                 getChildren().addAll(item, createSeperator());
             }
         }
@@ -88,7 +88,7 @@ public class Menu {
         }
     }
 
-    private static class MenuItem extends StackPane{
+    private static class MenuItem extends StackPane {
         public MenuItem(String name) {
             LinearGradient gradient = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE,
                     new Stop(0, Color.DARKBLUE),

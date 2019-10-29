@@ -17,7 +17,7 @@ public class SniperTower extends Tower {
     public SniperTower() {}
     public SniperTower(int x, int y) {
         super(RANGE, DAMAGE, SPEED, x, y, CENTER_X, CENTER_Y, PROJECTILE_SIZE, PROJECTILE_COLOR, ROTATE_RADIUS,
-                "src/thegame/res/asset/tower/towerDefense_tile206.png",
+                "src/thegame/res/asset/tower/sniperTower.png",
                 "res/sound/sniperTowerEffect.mp3");
     }
 }

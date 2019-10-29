@@ -17,7 +17,7 @@ public class MachineGunTower extends Tower{
     public MachineGunTower() {}
     public MachineGunTower(int x, int y) {
         super(RANGE, DAMAGE, SPEED, x, y, CENTER_X, CENTER_Y, PROJECTILE_SIZE, PROJECTILE_COLOR, ROTATE_RADIUS,
-                "src/thegame/res/asset/tower/towerDefense_tile250.png",
+                "src/thegame/res/asset/tower/machineGunTower.png",
                 "res/sound/machineTowerEffect.mp3");
     }
 }
