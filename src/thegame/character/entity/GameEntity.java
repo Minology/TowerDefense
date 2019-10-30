@@ -13,18 +13,16 @@ import java.nio.file.Paths;
  * Created by Minology on 08:33 CH
  */
 public abstract class GameEntity {
-    protected Point2D coords;
+    private Point2D coords;
     protected ImageView view;
 
-    protected GameEntity() {}
-    protected GameEntity(int x, int y) {
-        coords = new Point2D(x, y);
-    }
+    public GameEntity() {}
 
     public GameEntity(String path) {
         try {
             InputStream is = Files.newInputStream(Paths.get(path));
             view = new ImageView(new Image(is));
+            is.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -34,11 +32,11 @@ public abstract class GameEntity {
         return new Point2D(view.getTranslateX(), view.getTranslateY());
     }
 
-    protected int getCurrentX() {
+    public int getCurrentX() {
         return (int) view.getTranslateX();
     }
 
-    protected int getCurrentY() {
+    public int getCurrentY() {
         return (int) view.getTranslateY();
     }
 
@@ -51,8 +49,16 @@ public abstract class GameEntity {
         view.setY(y);
     }
 
-    protected void setTranslate(int x, int y) {
+    public void setTranslate(int x, int y) {
         view.setTranslateX(x);
         view.setTranslateY(y);
+    }
+
+    public void setCoords(double x, double y) {
+        coords = new Point2D(x, y);
+    }
+
+    public Point2D getCoords() {
+        return coords;
     }
 }

@@ -6,15 +6,13 @@ import javafx.util.Duration;
 
 import java.net.URL;
 
-/**
- * Created by Minology on 10:34 CH
- */
 public class MusicPlayer {
+    public static final String BACKGROUND = "/thegame/res/sound/theme.mp3";
     private MediaPlayer player;
 
     public MusicPlayer(String path, boolean infiniteLoop) {
         try {
-            final URL resource = getClass().getResource(path);
+            final URL resource = MusicPlayer.class.getResource(path);
             Media media = new Media(resource.toString());
             player = new MediaPlayer(media);
             if (infiniteLoop) {

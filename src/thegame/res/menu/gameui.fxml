@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane hgap="10.0" vgap="3.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="thegame.engine.GameController">
+    <padding>
+        <Insets left="950.0" top="690.0"/>
+    </padding>
+    <columnConstraints>
+        <ColumnConstraints maxWidth="173.0" minWidth="10.0" prefWidth="80.0"/>
+        <ColumnConstraints maxWidth="173.0" minWidth="10.0" prefWidth="50.0"/>
+        <ColumnConstraints maxWidth="173.0" minWidth="10.0" prefWidth="50.0"/>
+        <ColumnConstraints maxWidth="300.0" minWidth="10.0" prefWidth="85.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="76" minHeight="32" prefHeight="41"/>
+        <RowConstraints maxHeight="87.5" minHeight="10.0" prefHeight="40.0"/>
+    </rowConstraints>
+    <Label fx:id="currentLives" prefHeight="18.0" prefWidth="73.0" text="1" textFill="WHITE" GridPane.columnIndex="3">
+        <font>
+          <Font size="36.0"/>
+        </font>
+    </Label>
+    <Label fx:id="currentResources" text="1" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="1">
+        <font>
+          <Font size="36.0"/>
+        </font>
+    </Label>
+    <ImageView fitHeight="38.0" fitWidth="41.0" GridPane.columnIndex="2">
+        <GridPane.margin>
+            <Insets left="5.0"/>
+        </GridPane.margin>
+        <Image url="@../asset/player/heart.png"/>
+    </ImageView>
+    <ImageView fitHeight="53.0" fitWidth="49.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+        <GridPane.margin>
+            <Insets/>
+        </GridPane.margin>
+        <Image url="@../asset/player/resource.png"/>
+    </ImageView>
+    <Label prefHeight="35.0" prefWidth="75.0" text="Wave" textFill="WHITE">
+        <font>
+          <Font size="29.0"/>
+        </font>
+    </Label>
+    <Label fx:id="currentWave" layoutX="100.0" layoutY="45.0" text="1" textFill="WHITE" GridPane.columnIndex="1">
+        <font>
+          <Font size="36.0"/>
+        </font>
+    </Label>
+    <Label fx:id="waveDelayInSecond" layoutX="1329.0" layoutY="635.0" prefHeight="18.0" prefWidth="73.0"
+           textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <font>
+          <Font size="36.0"/>
+        </font>
+    </Label>
+    <Label fx:id="waveDelay" layoutX="1060.0" layoutY="640.0" prefHeight="35.0" prefWidth="75.0" text="Wait"
+           textFill="WHITE" GridPane.rowIndex="1">
+        <font>
+          <Font size="29.0"/>
+        </font>
+    </Label>
+</GridPane>

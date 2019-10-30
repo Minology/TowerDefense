@@ -1,8 +1,5 @@
-package thegame;
+package thegame.config;
 
-/**
- * Created by Minology on 03:33 CH
- */
 public final class Config {
     public static final int TILE_SIZE = 64;
     private static final int TILE_VERTICAL = 12;

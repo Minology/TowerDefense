@@ -5,19 +5,11 @@ import javafx.animation.PathTransition;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
-import thegame.character.entity.GameEntity;
 
-/**
- * Created by Minology on 04:19 CH
- */
-public class MovableEntity extends GameEntity {
+public abstract class MovableEntity extends GameEntity {
     private boolean finished;
 
     public MovableEntity() {}
-
-    public MovableEntity(int x, int y) {
-        super(x, y);
-    }
 
     public MovableEntity(String path) {
         super(path);

@@ -6,5 +6,6 @@ module TowerDefense {
      requires javafx.controls;
      requires javafx.media;
      opens thegame;
+     opens thegame.engine;
      exports thegame;
 }

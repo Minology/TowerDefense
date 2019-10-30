@@ -1,22 +1,12 @@
-package thegame;
+package thegame.engine;
 
 import thegame.character.enemy.*;
 import thegame.character.tower.Tower;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Minology on 08:29 CH
- */
 public class GameField {
-    enum state {
-        IS_RUNNING,
-        IS_PAUSED,
-        IS_STOPPED
-    }
-
-    private int coin;
+    private int resources;
     private int lives;
     private ArrayList<Tower> towers;
     private ArrayList<Enemy> enemies;
@@ -24,11 +14,11 @@ public class GameField {
     public GameField() {
         enemies = new ArrayList<>();
         towers = new ArrayList<>();
-        coin = 0;
-        lives = 0;
+        resources = 0;
+        lives = 20;
     }
 
-    public void addEnemy(Enemy.type enemyType) {
+    public void addEnemy(EnemyType enemyType) {
         switch (enemyType){
             case NORMAL:
                 enemies.add(new NormalEnemy());
@@ -69,7 +59,19 @@ public class GameField {
         return !enemies.isEmpty();
     }
 
-    public void removeEnemy(Enemy enemy) {
-        enemies.remove(enemy);
+    public int getLives() {
+        return lives;
+    }
+
+    public int getResources() {
+        return resources;
+    }
+
+    public void minusLive(int lives) {
+        this.lives -= lives;
+    }
+
+    public void addResource(int resources) {
+        this.resources += resources;
     }
 }

@@ -6,12 +6,11 @@ package thegame.character.enemy;
 public class SmallerEnemy extends Enemy{
     private static final int HP = 30;
     private static final int ARMOR = 7;
-    private static final int SPEED = 10;
-    private static final int BOUNTY = 150;
-    public SmallerEnemy(int x, int y){
-        super(x, y);
-    }
+    private static final int SPEED = 11;
+    private static final int BOUNTY = 10;
+    private static final String PATH = "src/thegame/res/asset/enemy/smallerEnemy.png";
+
     public SmallerEnemy() {
-        super(HP, ARMOR, SPEED, BOUNTY, "src/thegame/res/asset/enemy/towerDefense_tile246.png");
+        super(HP, ARMOR, SPEED, BOUNTY, PATH);
     }
 }

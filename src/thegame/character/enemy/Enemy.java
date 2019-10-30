@@ -6,9 +6,6 @@ import javafx.scene.shape.Path;
 import thegame.character.healthbar.HealthBar;
 import thegame.character.entity.MovableEntity;
 
-/**
- * Created by Minology on 06:07 CH
- */
 public abstract class Enemy extends MovableEntity {
     private int armor;
     private int fullHp;
@@ -16,16 +13,6 @@ public abstract class Enemy extends MovableEntity {
     private int speed;
     private int bounty;
     private HealthBar healthBar;
-    public enum type {
-        NORMAL,
-        SMALLER,
-        TANKER,
-        BOSS
-    }
-
-    public Enemy(int x, int y){
-        super(x, y);
-    }
 
     public Enemy(int hp, int damage, int speed, int bounty, String path) {
         super(path);
@@ -40,11 +27,11 @@ public abstract class Enemy extends MovableEntity {
     }
 
     public void move(Pane enemyLayer, Path path) {
-        createPathTransition(enemyLayer, path,true, getTravelTime());
-        healthBar.createPathTransition(enemyLayer, path, false, getTravelTime());
+        createPathTransition(enemyLayer, path,true, getTravelTimeInMillis());
+        healthBar.createPathTransition(enemyLayer, path, false, getTravelTimeInMillis());
     }
 
-    private double getTravelTime() {
+    private double getTravelTimeInMillis() {
         return 100000.0 / speed;
     }
 
@@ -53,11 +40,15 @@ public abstract class Enemy extends MovableEntity {
     }
 
     public void getDamaged(int damage) {
-        hp -= damage;
+        hp -= (damage - armor);
         if (hp > 0) healthBar.setValue(1.0 * hp / fullHp);
     }
 
     public Node getHealthBarPane() {
         return healthBar.getView();
+    }
+
+    public int getBounty() {
+        return bounty;
     }
 }

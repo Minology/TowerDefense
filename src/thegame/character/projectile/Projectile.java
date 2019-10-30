@@ -4,11 +4,8 @@ import javafx.scene.shape.Circle;
 import thegame.character.enemy.Enemy;
 import thegame.character.entity.GameEntity;
 
-/**
- * Created by Minology on 06:51 CH
- */
 public class Projectile extends GameEntity {
-    private final static double PROJECTILE_SPEED = 5;
+    private final static double PROJECTILE_SPEED = 7;
     private final static double HIT_RANGE = 5;
     private Enemy enemy;
     private double x;

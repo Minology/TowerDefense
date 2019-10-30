@@ -5,16 +5,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- * Created by Minology on 09:29 CH
- */
 public class EnemyWaves {
-    public static double DELAY_TO_NEXT_ENEMY  = 1;
-    public static double WAVE_DELAY_IN_SECOND = 3;
+    private static double DELAY_TO_NEXT_ENEMY = 1;
+    public static double WAVE_DELAY_IN_SECOND = 15;
     private int numOfWaves;
     private int currentWave;
     private int currentEnemy;
-    private ArrayList<Enemy.type>[] wave;
+    private ArrayList<ArrayList<EnemyType>> waves;
 
     public EnemyWaves() {
         currentEnemy = 0;
@@ -23,26 +20,27 @@ public class EnemyWaves {
             File src = new File("src/thegame/res/enemywave/enemywaves.txt");
             Scanner in = new Scanner(src);
             numOfWaves = in.nextInt();
-            wave = new ArrayList[numOfWaves];
+            waves = new ArrayList<>(numOfWaves);
             for (int i = 0; i < numOfWaves; ++i) {
                 int numOfEnemies = in.nextInt();
-                wave[i] = new ArrayList<>();
+                ArrayList<EnemyType> wave = new ArrayList<>();
                 for (int j = 0; j < numOfEnemies; ++j) {
                     switch (in.nextInt()){
                         case 0:
-                            wave[i].add(Enemy.type.NORMAL);
+                            wave.add(EnemyType.NORMAL);
                             break;
                         case 1:
-                            wave[i].add(Enemy.type.SMALLER);
+                            wave.add(EnemyType.SMALLER);
                             break;
                         case 2:
-                            wave[i].add(Enemy.type.TANKER);
+                            wave.add(EnemyType.TANKER);
                             break;
                         case 3:
-                            wave[i].add(Enemy.type.BOSS);
+                            wave.add(EnemyType.BOSS);
                             break;
                     }
                 }
+                waves.add(wave);
             }
         } catch (IOException ex) {
             System.out.println("You're save. I cannot find any enemy~~~");
@@ -58,14 +56,25 @@ public class EnemyWaves {
         currentEnemy = 0;
     }
 
-    public Enemy.type getNextEnemy() {
-        Enemy.type enemyType = wave[currentWave].get(currentEnemy);
+    public EnemyType getNextEnemy() {
+        EnemyType enemyType = waves.get(currentWave).get(currentEnemy);
         ++currentEnemy;
         return enemyType;
     }
 
+    public boolean readyToNextWave(double waveDelay) {
+        return hasNextWave() && waveDelay >= WAVE_DELAY_IN_SECOND;
+    }
+
+    public boolean readyToNextEnemy(double elapsedEnemySpawnTime) {
+        return elapsedEnemySpawnTime > EnemyWaves.DELAY_TO_NEXT_ENEMY && hasNextEnemyInCurrentWave();
+    }
+
+    public int getCurrentWave() {
+        return currentWave;
+    }
 
     public boolean hasNextEnemyInCurrentWave() {
-        return currentEnemy < wave[currentWave].size();
+        return currentEnemy < waves.get(currentWave).size();
     }
 }

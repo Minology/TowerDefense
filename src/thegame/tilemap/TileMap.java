@@ -5,8 +5,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import thegame.Config;
-
+import thegame.config.Config;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,29 +13,26 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
-/**
- * Created by Minology on 06:00 CH
- */
 public class TileMap extends ImageView {
     private int[][] map;
-    private final int WIDTH;
-    private final int HEIGHT;
     private final int TILE_WIDTH;
     private final int TILE_HEIGHT;
     private final int TILE_SIZE = 64;
-    private Path enemyPath;
-    private Path healthPath;
+    private Path path;
+
+    private final static int ROAD = 0;
+    private final static int OBSTACLE = 1;
+    private final static int START = 2;
+    private final static int END = 3;
+    private final static int BUILDABLE = 4;
 
     public TileMap(int width, int height) {
-        this.WIDTH = width;
-        this.HEIGHT = height;
         this.TILE_WIDTH = width / Config.TILE_SIZE + 1;
         this.TILE_HEIGHT = height / Config.TILE_SIZE + 1;
         map = new int[TILE_HEIGHT][TILE_WIDTH];
         loadMapArray();
         loadMapImage();
-        enemyPath = new Path();
-        healthPath = new Path();
+        path = new Path();
         findPath();
     }
 
@@ -49,18 +45,20 @@ public class TileMap extends ImageView {
                     map[i][j] = in.nextInt();
                 }
             }
+            in.close();
         } catch (IOException ex) {
             System.out.println("Where in the world is the file map1.txt?");
         }
     }
 
-    private void loadMapImage(){
+    private void loadMapImage() {
         try {
             InputStream is = Files.newInputStream(Paths.get("src/thegame/res/map/tilemap.png"));
             Image image = new Image(is);
             this.setFitWidth(Config.SCREEN_WIDTH);
             this.setFitHeight(Config.SCREEN_HEIGHT);
             this.setImage(image);
+            is.close();
         }
         catch (IOException e) {
             System.out.println("Where in the world is tilemap.png?");
@@ -72,12 +70,11 @@ public class TileMap extends ImageView {
     }
 
     private boolean legal(int x, int y) {
-        return checkBound(x, y) && map[x][y] != 1;
+        return checkBound(x, y) && map[x][y] != OBSTACLE && map[x][y] != BUILDABLE;
     }
 
     private void appendToPath(int x, int y) {
-        enemyPath.getElements().add(new LineTo(TILE_SIZE * y, TILE_SIZE * x));
-        healthPath.getElements().add(new LineTo(TILE_SIZE * y, TILE_SIZE * x - 30));
+        path.getElements().add(new LineTo(TILE_SIZE * y, TILE_SIZE * x));
     }
 
     private void findPath() {
@@ -87,15 +84,14 @@ public class TileMap extends ImageView {
         int x = 0, y = 0;
         for (int i = 0; i < TILE_HEIGHT; ++i) {
             for (int j = 0; j < TILE_WIDTH; ++j) {
-                if (map[i][j] == 2) {
+                if (map[i][j] == START) {
                     x = i;
                     y = j;
                 }
             }
         }
 
-        enemyPath.getElements().add(new MoveTo(y * 64, x * 64));
-        healthPath.getElements().add(new MoveTo(y * 64, x * 64 - 30));
+        path.getElements().add(new MoveTo(y * TILE_SIZE, x * TILE_SIZE));
         do {
             for (int dir = 0; dir < 4; ++dir) {
                 if (legal(x + dx[dir], y + dy[dir])) {
@@ -104,15 +100,11 @@ public class TileMap extends ImageView {
                     appendToPath(x, y);
                 }
             }
-        } while (map[x][y] != 3);
+        } while (map[x][y] != END);
         map = origin;
     }
 
     public Path getEnemyPath() {
-        return enemyPath;
-    }
-
-    public Path getHealthPath() {
-        return healthPath;
+        return path;
     }
 }

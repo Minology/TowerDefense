@@ -7,11 +7,10 @@ public class TankerEnemy extends Enemy {
     private static final int HP = 100;
     private static final int ARMOR = 20;
     private static final int SPEED = 3;
-    private static final int BOUNTY = 300;
-    public TankerEnemy(int x, int y) {
-        super(x, y);
-    }
+    private static final int BOUNTY = 15;
+    private static final String PATH = "src/thegame/res/asset/enemy/tankerEnemy.png";
+
     public TankerEnemy() {
-        super(HP, ARMOR, SPEED, BOUNTY, "src/thegame/res/asset/enemy/towerDefense_tile247.png");
+        super(HP, ARMOR, SPEED, BOUNTY, PATH);
     }
 }

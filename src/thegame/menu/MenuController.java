@@ -1,15 +1,11 @@
 package thegame.menu;
 
-import thegame.GameStage;
-
-/**
- * Created by Minology on 09:49 CH
- */
+import thegame.engine.GameManager;
 
 public class MenuController {
     static void startNewGame() {
         try {
-            GameStage gameStage = new GameStage();
+            GameManager gameStage = new GameManager();
             gameStage.initialize();
         } catch (Exception ex) {
             ex.printStackTrace();
