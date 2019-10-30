@@ -5,7 +5,7 @@ import thegame.character.enemy.Enemy;
 import thegame.character.entity.GameEntity;
 
 public class Projectile extends GameEntity {
-    private final static double PROJECTILE_SPEED = 7;
+    private final static double PROJECTILE_SPEED = 8;
     private final static double HIT_RANGE = 5;
     private Enemy enemy;
     private double x;

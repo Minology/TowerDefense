@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 public class SniperTower extends Tower {
     private static final int RANGE = 250;
     private static final int DAMAGE = 65;
-    private static final double SPEED = 0.7;
+    private static final double SPEED = 0.6;
     private static final int PROJECTILE_SIZE = 5;
     private static final Color PROJECTILE_COLOR = Color.BLACK;
     private static final int CENTER_X = 0;

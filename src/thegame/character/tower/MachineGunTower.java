@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 public class MachineGunTower extends Tower{
     private static final int RANGE = 140;
     private static final int DAMAGE = 50;
-    private static final double SPEED = 1.2;
+    private static final double SPEED = 1.0;
     private static final int PROJECTILE_SIZE = 5;
     private static final Color PROJECTILE_COLOR = Color.RED;
     private static final int CENTER_X = 0;

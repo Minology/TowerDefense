@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 public class NormalTower extends Tower{
     private static final int RANGE = 170;
     private static final int DAMAGE = 40;
-    private static final double SPEED = 1;
+    private static final double SPEED = 0.8;
     private static final int PROJECTILE_SIZE = 5;
     private static final Color PROJECTILE_COLOR = Color.GREEN;
     private static final int CENTER_X = 0;
