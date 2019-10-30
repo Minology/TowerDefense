@@ -70,13 +70,16 @@ public class GameManager {
     }
 
     private void createTower() {
-        NormalTower normalTower1 = new NormalTower(Config.SCREEN_WIDTH - 64*2, 64*5);
-        MachineGunTower machineGunTower1 = new MachineGunTower(Config.SCREEN_WIDTH - 64*7, 64*7);
-        SniperTower sniperTower1 = new SniperTower(64*10, 64*5);
+        NormalTower normalTower1 = new NormalTower(Config.SCREEN_WIDTH - Config.TILE_SIZE*2, Config.TILE_SIZE*5);
+        MachineGunTower machineGunTower1 = new MachineGunTower(Config.SCREEN_WIDTH - Config.TILE_SIZE*7, Config.TILE_SIZE*7);
+        SniperTower sniperTower1 = new SniperTower(Config.TILE_SIZE*10, Config.TILE_SIZE*5);
+        MachineGunTower machineGunTower2 = new MachineGunTower(Config.TILE_SIZE*8, Config.TILE_SIZE*5);
         gameField.addTower(normalTower1);
         gameField.addTower(machineGunTower1);
         gameField.addTower(sniperTower1);
-        towerLayer.getChildren().addAll(normalTower1.getView(), machineGunTower1.getView(), sniperTower1.getView());
+        gameField.addTower(machineGunTower2);
+        towerLayer.getChildren().addAll(normalTower1.getView(), machineGunTower1.getView(), sniperTower1.getView(),
+                    machineGunTower2.getView());
     }
 
     private void spawnEnemies(EnemyType enemyType) {
