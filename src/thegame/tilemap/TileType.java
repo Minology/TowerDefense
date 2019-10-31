@@ -11,7 +11,9 @@ public enum TileType {
     OBSTACLE(1),
     START(2),
     END(3),
-    BUILDABLE(4),
+    NORMAL(4),
+    SNIPER(5),
+    MACHINE(6),
     TILE_UNKNOWN(-1);
 
     private final int value;
@@ -32,5 +34,9 @@ public enum TileType {
         if (type == null)
             return TileType.TILE_UNKNOWN;
         return type;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

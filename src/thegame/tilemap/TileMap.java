@@ -1,5 +1,6 @@
 package thegame.tilemap;
 
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.LineTo;
@@ -9,9 +10,11 @@ import thegame.config.Config;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class TileMap extends ImageView {
@@ -63,13 +66,28 @@ public class TileMap extends ImageView {
         }
     }
 
+    public ArrayList<ArrayList<Integer>> getBuildSpots(TileType type) {
+        ArrayList<ArrayList<Integer>> buildSpots = new ArrayList<>();
+        for (int i = 0; i < map.size(); ++i) {
+            for (int j = 0; j < map.get(0).size(); ++j) {
+                if (map.get(i).get(j) == type) {
+                    ArrayList<Integer> spot = new ArrayList<>();
+                    spot.add(i);
+                    spot.add(j);
+                    buildSpots.add(spot);
+                }
+            }
+        }
+        return buildSpots;
+    }
+
     private boolean checkBound(int x, int y) {
         return x >= 0 && x < TILE_HEIGHT && y >= 0 && y < TILE_WIDTH;
     }
 
     private boolean legal(int x, int y, boolean[][] vis) {
         return checkBound(x, y) && !vis[x][y] &&
-                map.get(x).get(y) != TileType.OBSTACLE && map.get(x).get(y) != TileType.BUILDABLE;
+                (map.get(x).get(y) == TileType.ROAD || map.get(x).get(y) == TileType.END);
     }
 
     private void appendToPath(int x, int y) {

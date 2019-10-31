@@ -15,7 +15,7 @@ public class GameField {
         enemies = new ArrayList<>();
         towers = new ArrayList<>();
         resources = 0;
-        lives = 20;
+        lives = 100;
     }
 
     public void addEnemy(EnemyType enemyType) {

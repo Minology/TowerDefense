@@ -21,9 +21,13 @@ import thegame.menu.MenuNavigator;
 import thegame.menu.PostGameMenu;
 import thegame.service.MusicPlayer;
 import thegame.tilemap.TileMap;
+import thegame.tilemap.TileType;
 
+import javax.crypto.Mac;
+import javax.net.ssl.SNIHostName;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameManager {
     private TileMap tileMap;
@@ -70,7 +74,32 @@ public class GameManager {
     }
 
     private void createTower() {
-        NormalTower normalTower1 = new NormalTower(Config.SCREEN_WIDTH - Config.TILE_SIZE*2, Config.TILE_SIZE*5);
+        ArrayList<ArrayList<Integer>> spots;
+        spots = tileMap.getBuildSpots(TileType.NORMAL);
+        for (ArrayList<Integer> spot : spots) {
+            NormalTower normalTower = new NormalTower(
+                    Config.TILE_SIZE * spot.get(1) - Config.TILE_SIZE,
+                    Config.TILE_SIZE * spot.get(0) - Config.TILE_SIZE);
+            gameField.addTower(normalTower);
+            towerLayer.getChildren().addAll(normalTower.getView());
+        }
+        spots = tileMap.getBuildSpots(TileType.SNIPER);
+        for (ArrayList<Integer> spot : spots) {
+            SniperTower sniperTower = new SniperTower(
+                    Config.TILE_SIZE * spot.get(1) - Config.TILE_SIZE,
+                    Config.TILE_SIZE * spot.get(0) - Config.TILE_SIZE);
+            gameField.addTower(sniperTower);
+            towerLayer.getChildren().addAll(sniperTower.getView());
+        }
+        spots = tileMap.getBuildSpots(TileType.MACHINE);
+        for (ArrayList<Integer> spot : spots) {
+            MachineGunTower machineGunTower = new MachineGunTower(
+                    Config.TILE_SIZE * spot.get(1) - Config.TILE_SIZE,
+                    Config.TILE_SIZE * spot.get(0) - Config.TILE_SIZE);
+            gameField.addTower(machineGunTower);
+            towerLayer.getChildren().addAll(machineGunTower.getView());
+        }
+      /**  NormalTower normalTower1 = new NormalTower(Config.SCREEN_WIDTH - Config.TILE_SIZE*2, Config.TILE_SIZE*5);
         MachineGunTower machineGunTower1 = new MachineGunTower(Config.SCREEN_WIDTH - Config.TILE_SIZE*7, Config.TILE_SIZE*7);
         SniperTower sniperTower1 = new SniperTower(Config.TILE_SIZE*10, Config.TILE_SIZE*5);
         MachineGunTower machineGunTower2 = new MachineGunTower(Config.TILE_SIZE*8, Config.TILE_SIZE*5);
@@ -79,7 +108,7 @@ public class GameManager {
         gameField.addTower(sniperTower1);
         gameField.addTower(machineGunTower2);
         towerLayer.getChildren().addAll(normalTower1.getView(), machineGunTower1.getView(), sniperTower1.getView(),
-                    machineGunTower2.getView());
+                    machineGunTower2.getView()); */
     }
 
     private void spawnEnemies(EnemyType enemyType) {
