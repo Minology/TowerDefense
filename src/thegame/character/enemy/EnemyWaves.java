@@ -25,20 +25,7 @@ public class EnemyWaves {
                 int numOfEnemies = in.nextInt();
                 ArrayList<EnemyType> wave = new ArrayList<>();
                 for (int j = 0; j < numOfEnemies; ++j) {
-                    switch (in.nextInt()){
-                        case 0:
-                            wave.add(EnemyType.NORMAL);
-                            break;
-                        case 1:
-                            wave.add(EnemyType.SMALLER);
-                            break;
-                        case 2:
-                            wave.add(EnemyType.TANKER);
-                            break;
-                        case 3:
-                            wave.add(EnemyType.BOSS);
-                            break;
-                    }
+                    wave.add(EnemyType.fromInt(in.nextInt()));
                 }
                 waves.add(wave);
             }

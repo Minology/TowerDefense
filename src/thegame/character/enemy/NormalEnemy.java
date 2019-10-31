@@ -6,7 +6,7 @@ package thegame.character.enemy;
 public class NormalEnemy extends Enemy {
     private static final int HP = 130;
     private static final int ARMOR = 20;
-    private static final int SPEED = 6;
+    private static final double SPEED = 2;
     private static final int BOUNTY = 10;
     private static final String PATH = "src/thegame/res/asset/enemy/normalEnemy.png";
 

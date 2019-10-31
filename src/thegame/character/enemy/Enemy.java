@@ -10,11 +10,11 @@ public abstract class Enemy extends MovableEntity {
     private int armor;
     private int fullHp;
     private int hp;
-    private int speed;
+    private double speed;
     private int bounty;
     private HealthBar healthBar;
 
-    public Enemy(int hp, int damage, int speed, int bounty, String path) {
+    public Enemy(int hp, int damage, double speed, int bounty, String path) {
         super(path);
         this.fullHp = hp;
         this.hp = hp;
@@ -26,13 +26,13 @@ public abstract class Enemy extends MovableEntity {
         this.setTranslate(-50, -50);
     }
 
-    public void move(Pane enemyLayer, Path path) {
-        createPathTransition(enemyLayer, path,true, getTravelTimeInMillis());
-        healthBar.createPathTransition(enemyLayer, path, false, getTravelTimeInMillis());
+    public void move(Pane enemyLayer, Path path, int pathLength) {
+        createPathTransition(enemyLayer, path,true, getTravelTimeInMillis(pathLength));
+        healthBar.createPathTransition(enemyLayer, path, false, getTravelTimeInMillis(pathLength));
     }
 
-    private double getTravelTimeInMillis() {
-        return 100000.0 / speed;
+    private double getTravelTimeInMillis(int pathLength) {
+        return pathLength * 1000.0 / speed;
     }
 
     public boolean isAlive() {

@@ -11,29 +11,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TileMap extends ImageView {
-    private int[][] map;
+    private ArrayList<ArrayList<TileType>> map;
     private final int TILE_WIDTH;
     private final int TILE_HEIGHT;
     private final int TILE_SIZE = 64;
+    private final int LENGTH;
     private Path path;
-
-    private final static int ROAD = 0;
-    private final static int OBSTACLE = 1;
-    private final static int START = 2;
-    private final static int END = 3;
-    private final static int BUILDABLE = 4;
 
     public TileMap(int width, int height) {
         this.TILE_WIDTH = width / Config.TILE_SIZE + 1;
         this.TILE_HEIGHT = height / Config.TILE_SIZE + 1;
-        map = new int[TILE_HEIGHT][TILE_WIDTH];
+        map = new ArrayList<>();
         loadMapArray();
         loadMapImage();
         path = new Path();
-        findPath();
+        LENGTH = findPath();
     }
 
     private void loadMapArray() {
@@ -41,9 +37,11 @@ public class TileMap extends ImageView {
             File src = new File("src/thegame/res/map/map1.txt");
             Scanner in = new Scanner(src);
             for (int i = 0; i < TILE_HEIGHT; ++i) {
+                ArrayList<TileType> thisRow = new ArrayList<>();
                 for (int j = 0; j < TILE_WIDTH; ++j) {
-                    map[i][j] = in.nextInt();
+                    thisRow.add(TileType.fromInt(in.nextInt()));
                 }
+                map.add(thisRow);
             }
             in.close();
         } catch (IOException ex) {
@@ -69,22 +67,23 @@ public class TileMap extends ImageView {
         return x >= 0 && x < TILE_HEIGHT && y >= 0 && y < TILE_WIDTH;
     }
 
-    private boolean legal(int x, int y) {
-        return checkBound(x, y) && map[x][y] != OBSTACLE && map[x][y] != BUILDABLE;
+    private boolean legal(int x, int y, boolean[][] vis) {
+        return checkBound(x, y) && !vis[x][y] &&
+                map.get(x).get(y) != TileType.OBSTACLE && map.get(x).get(y) != TileType.BUILDABLE;
     }
 
     private void appendToPath(int x, int y) {
         path.getElements().add(new LineTo(TILE_SIZE * y, TILE_SIZE * x));
     }
 
-    private void findPath() {
-        int[][] origin = map;
-        int[] dx = {0, 1, 0, -1};
-        int[] dy = {1, 0, -1, 0};
-        int x = 0, y = 0;
+    private int findPath() {
+        boolean[][] vis = new boolean[map.size()][map.get(0).size()];
+        final int[] dx = {0, 1, 0, -1};
+        final int[] dy = {1, 0, -1, 0};
+        int x = 0, y = 0, length = 0;
         for (int i = 0; i < TILE_HEIGHT; ++i) {
             for (int j = 0; j < TILE_WIDTH; ++j) {
-                if (map[i][j] == START) {
+                if (map.get(i).get(j) == TileType.START) {
                     x = i;
                     y = j;
                 }
@@ -94,17 +93,22 @@ public class TileMap extends ImageView {
         path.getElements().add(new MoveTo(y * TILE_SIZE, x * TILE_SIZE));
         do {
             for (int dir = 0; dir < 4; ++dir) {
-                if (legal(x + dx[dir], y + dy[dir])) {
-                    map[x][y] = 1;
+                if (legal(x + dx[dir], y + dy[dir], vis)) {
+                    ++length;
+                    vis[x][y] = true;
                     x += dx[dir]; y += dy[dir];
                     appendToPath(x, y);
                 }
             }
-        } while (map[x][y] != END);
-        map = origin;
+        } while (map.get(x).get(y) != TileType.END);
+        return length;
     }
 
     public Path getEnemyPath() {
         return path;
+    }
+
+    public int getLength() {
+        return LENGTH;
     }
 }

@@ -85,7 +85,7 @@ public class GameManager {
     private void spawnEnemies(EnemyType enemyType) {
         gameField.addEnemy(enemyType);
         Enemy enemy = gameField.getLastEnemy();
-        enemy.move(enemyLayer, tileMap.getEnemyPath());
+        enemy.move(enemyLayer, tileMap.getEnemyPath(), tileMap.getLength());
     }
 
     private void createProjectiles(long currentNanoTime) {

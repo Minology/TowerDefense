@@ -18,9 +18,10 @@ import java.util.List;
 public abstract class Tower extends GameEntity {
     private int range;
     private int damage;
-    private double speed;
+    private double attackSpeed;
     private Color projectileColor;
     private int projectileSize;
+    private double projectileSpeed;
     private long lastShootNanoTime;
     private ArrayList<Projectile> projectiles;
     private MusicPlayer musicPlayer;
@@ -28,17 +29,18 @@ public abstract class Tower extends GameEntity {
     private TowerBase towerBase;
     private int cost;
 
-    public Tower(int range, int damage, double speed, int cost, int x, int y, int centerX, int centerY,
-                 int psize, Color color, int radius, String imagePath, String effect) {
+    public Tower(int range, int damage, double attackSpeed, int cost, int x, int y, int centerX, int centerY,
+                 int psize, Color color, double projectileSpeed, int radius, String imagePath, String effect) {
         super(imagePath);
         musicPlayer = new MusicPlayer(effect, false);
         this.setCoords(x + Config.TILE_SIZE / 2.0, y + Config.TILE_SIZE / 2.0);
         this.range = range;
         this.damage = damage;
-        this.speed = speed;
+        this.attackSpeed = attackSpeed;
         this.cost = cost;
         this.projectileColor = color;
         this.projectileSize = psize;
+        this.projectileSpeed = projectileSpeed;
         this.rotateRadius = radius;
         this.projectiles = new ArrayList<>();
         this.towerBase = new TowerBase(x, y);
@@ -71,14 +73,14 @@ public abstract class Tower extends GameEntity {
         double angle = Math.toRadians(90 - getAngle(enemy, this.getCoords()));
         double x = Math.cos(angle) * this.rotateRadius + this.getCoords().getX();
         double y = -Math.sin(angle) * this.rotateRadius + this.getCoords().getY();
-        Projectile projectile1 = new Projectile(enemy, this.damage, circle, x, y);
+        Projectile projectile1 = new Projectile(enemy, this.damage, this.projectileSpeed, circle, x, y);
         pointTowardsEnemy(enemy);
         musicPlayer.play();
         projectiles.add(projectile1);
     }
 
     public boolean cooledDown(long currentNanoTime) {
-        return (currentNanoTime - lastShootNanoTime) / 1000000000.0 >= 1.0 / speed;
+        return (currentNanoTime - lastShootNanoTime) / 1000000000.0 >= 1.0 / attackSpeed;
     }
 
     private double getAngle(Enemy enemy, Point2D center) {
